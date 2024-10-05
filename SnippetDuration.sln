@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetDurationLogger", "SnippetDuration\SnippetDurationLogger.csproj", "{99A95F8D-FAEC-4542-B07F-FDAF9DDD86C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetDurationLoggerConsole", "SnippetDurationLoggerConsole\SnippetDurationLoggerConsole.csproj", "{8F4127C9-1726-411C-AF4D-95A9EBE17D4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99A95F8D-FAEC-4542-B07F-FDAF9DDD86C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A95F8D-FAEC-4542-B07F-FDAF9DDD86C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A95F8D-FAEC-4542-B07F-FDAF9DDD86C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A95F8D-FAEC-4542-B07F-FDAF9DDD86C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F4127C9-1726-411C-AF4D-95A9EBE17D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F4127C9-1726-411C-AF4D-95A9EBE17D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F4127C9-1726-411C-AF4D-95A9EBE17D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F4127C9-1726-411C-AF4D-95A9EBE17D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1A3B9C6-EBCF-48AE-A490-5EDD32EA5D4F}
+	EndGlobalSection
+EndGlobal
