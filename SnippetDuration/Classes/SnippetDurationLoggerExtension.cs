@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 
 namespace SnippetDuration.Classes
@@ -7,7 +8,7 @@ namespace SnippetDuration.Classes
     public static class SnippetDurationLoggerExtension
     {
         // Extension method to measure and log the time a block of code takes to execute
-        public static void LogExecutionTime(this ILogger logger, string operationName, Action action)
+        public static void LogExecutionTime(this ILogger logger, string operationComment, Action action, [CallerMemberName] string callingMethodName = "")
         {
             // Create a stopwatch to measure execution time
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -21,7 +22,7 @@ namespace SnippetDuration.Classes
             {
                 // Stop the stopwatch and log the elapsed time
                 stopwatch.Stop();
-                logger.LogInformation("{OperationName} took {ElapsedMilliseconds} ms", operationName, stopwatch.ElapsedMilliseconds);
+                logger.LogInformation($"{operationComment} (called in {callingMethodName}) took {stopwatch.ElapsedMilliseconds} ms");
             }
         }
     }
