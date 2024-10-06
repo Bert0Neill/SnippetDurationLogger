@@ -15,68 +15,53 @@ Within the **IN** and **NOT IN** clauses the following datatypes have been cater
 
 There are two places that you can update your code, just pick the one that best fits your project type:
 
-## Your dbContext Class
-Add a reference to the **LinqOpenJsonInClauseMiddleware.Classes** namespace
+## Your Class
+Add a reference to the **SnippetDuration.Classes** namespace
 ``` csharp
-using LinqOpenJsonInClauseMiddleware.Classes;
-```
-Add the middleware reference within the **OnConfiguring** method using **optionsBuilder** parameter.
-
-Add this line below: **optionsBuilder.AddInterceptors(new SqlServerReaderExecutingOpenJson());**
-``` csharp
- protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
- {
-     var config = new ConfigurationBuilder()
-      .SetBasePath(AppContext.BaseDirectory)
-      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-      .Build();
-     
-     var connectionString = config.GetConnectionString("DefaultConnection"); // Get connection string
-
-     // Configure the context to use SQL Server
-     optionsBuilder.UseSqlServer(connectionString, options =>
-     {
-         options.CommandTimeout(180); // Set command timeout (in seconds)                        
-     });
-
-     optionsBuilder.AddInterceptors(new SqlServerReaderExecutingOpenJson()); <-- Add this line
- }
+using SnippetDuration.Classes;
 ```
 
-## Your Program.cs Class
-
-
-Add a reference to the **LinqOpenJsonInClauseMiddleware.Classes** namespace
+Add the logger extension method **LogExecutionTime** around the code you wish to time
 ``` csharp
-using LinqOpenJsonInClauseMiddleware.Classes;
-```
-
-For each context that you create, add the Interceptor middleware, so that your LINQ statements will be parsed before being executed on SQL Server:
-
-
-Add this line below: **options.AddInterceptors(new SqlServerReaderExecutingOpenJson());**
-
-``` csharp
-var builder = Host.CreateDefaultBuilder(args).ConfigureServices((context, services) =>
+public void LongRunningprocess()
 {
-    services.AddDbContextFactory<LinqPerformanceDemoContext>(options =>
+    _logger.LogExecutionTime("LongRunningprocess", () =>
     {
-        options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection"));
+        // Code block whose execution time will be logged
+        System.Threading.Thread.Sleep(3500); // Simulate a long running process
+    });
+}
+```
 
-        options.AddInterceptors(new SqlServerReaderExecutingOpenJson()); <-- Add this line
+Below is a full class examaple of using the Snippet Timer
 
-    }, ServiceLifetime.Scoped);
+``` csharp
+using Microsoft.Extensions.Logging;
+using SnippetDuration.Classes;
 
-    services.AddDbContext<LinqPerformanceDemoContext>(options =>
+namespace SnippetDurationLoggerConsole
+{
+    internal class ExternalMethods
     {
-        options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection"));
+        private readonly ILogger<ExternalMethods> _logger;
 
-        options.AddInterceptors(new SqlServerReaderExecutingOpenJson()); <-- Add this line
+        public ExternalMethods(ILogger<ExternalMethods> logger)
+        {
+            _logger = logger;
+        }
 
-    }, ServiceLifetime.Scoped);
+        public void LongRunningprocess()
+        {
+            _logger.LogExecutionTime("LongRunningprocess", () =>                             <-- Add this block of code
+            {
+                // Code block whose execution time will be logged
+                System.Threading.Thread.Sleep(3500); // Simulate a long running process
+            });
+        }
+    }
+}
+```
 
-}).Build();
-``` 
 
 # Example  Code Usage
 The concept when using a large amount (in the millions) of values for your LINQ Contains extension is to create a Parallel loop and iterate over a chunked (manageable) loop of values (say in the 100K range - you can certainly go higher, it all just depends on the complexity of your individual LINQ statement). Add the results to a [ConcurrentBag](https://code-maze.com/csharp-concurrentbag/) and when finished, convert the ConcurrentBag back to a normal list for further processing locally.
