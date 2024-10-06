@@ -14,7 +14,7 @@ namespace SnippetDurationLoggerConsole
 
         public void LongRunningprocess()
         {
-            _logger.LogExecutionTime("LongRunningprocess", () =>
+            _logger.LogExecutionTime("Testing DB Call", () =>
             {
                 // Code block whose execution time will be logged
                 System.Threading.Thread.Sleep(3500); // Simulate a long running process
